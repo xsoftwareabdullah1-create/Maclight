@@ -47,7 +47,39 @@ class MainActivity : Activity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         darkMode = prefs.getBoolean("dark_mode", true)
-        showDesktop()
+        try {
+            showDesktop()
+        } catch (error: Throwable) {
+            android.util.Log.e("WinLite10", "Startup failed", error)
+            showStartupError(error)
+        }
+    }
+
+    private fun showStartupError(error: Throwable) {
+        val page = LinearLayout(this).apply {
+            orientation = LinearLayout.VERTICAL
+            setBackgroundColor(Color.rgb(7, 20, 38))
+            setPadding(dp(18), dp(24), dp(18), dp(18))
+        }
+        page.addView(TextView(this).apply {
+            text = "WinLite 10 could not start"
+            textSize = 22f
+            setTextColor(Color.WHITE)
+        }, matchWrap())
+        page.addView(TextView(this).apply {
+            text = (error.javaClass.simpleName + ": " + (error.message ?: "No error message") +
+                "\\n\\nPlease copy this error and include it in a bug report. Full details are written to Android Logcat under WinLite10.")
+            textSize = 14f
+            setTextColor(Color.rgb(220, 232, 245))
+            setPadding(0, dp(12), 0, dp(12))
+        }, matchWrap())
+        page.addView(actionButton("Retry startup") {
+            try { showDesktop() } catch (next: Throwable) {
+                android.util.Log.e("WinLite10", "Startup retry failed", next)
+                Toast.makeText(this, next.javaClass.simpleName + ": " + (next.message ?: ""), Toast.LENGTH_LONG).show()
+            }
+        }, matchWrap())
+        setContentView(page)
     }
 
     private fun baseLayout(title: String): LinearLayout {
@@ -292,8 +324,22 @@ class MainActivity : Activity() {
         page.addView(label("Current status: desktop shell only"), matchWrap())
         page.addView(label("✓ Native Android interface\n✓ Private persistent workspace\n✓ Import files from Android storage\n✓ Select EXE/MSI files for inspection\n✗ Wine runtime not yet bundled\n✗ x86/x64 CPU translation not yet integrated\n✗ EXE/MSI execution is not available in this milestone"), matchWrap())
         page.addView(label("An EXE is not an Android app. Running it requires a compatible Wine userspace and, for x86/x64 binaries on ARM, a suitable translation layer."), matchWrap())
-        page.addView(actionButton("Import EXE / MSI") { pickExecutable() }, matchWrap())
+        page.addView(actionButton("Select EXE / MSI") { pickExecutable() }, matchWrap())
+        page.addView(actionButton("Open EXE Runner status") { showExeRunner() }, matchWrap())
         page.addView(actionButton("← Desktop") { showDesktop() }, matchWrap())
+        setContentView(page)
+    }
+
+    private fun showExeRunner() {
+        val page = baseLayout("EXE Runner")
+        page.addView(label("Runtime status: NOT INSTALLED"), matchWrap())
+        page.addView(label("This screen is a readiness check, not a functioning Windows emulator. WinLite 10 currently has no Wine runtime, Linux userspace, or x86/x64 translation backend, so it cannot launch EXE/MSI applications yet."), matchWrap())
+        page.addView(label("For a real runner, a compatible runtime must be packaged and tested for this phone's CPU ABI and Android version. Do not install random EXE runner APKs or download untrusted runtime bundles."), matchWrap())
+        page.addView(actionButton("Choose an EXE / MSI file") { pickExecutable() }, matchWrap())
+        page.addView(actionButton("Recheck runtime") {
+            Toast.makeText(this, "No Windows runtime is bundled in this build", Toast.LENGTH_LONG).show()
+        }, matchWrap())
+        page.addView(actionButton("← Compatibility") { showCompatibility() }, matchWrap())
         setContentView(page)
     }
 
