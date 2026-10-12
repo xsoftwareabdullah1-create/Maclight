@@ -1,39 +1,110 @@
+<div align="center">
+
+<img src="assets/winlite10-banner.svg" alt="WinLite 10 — A Windows-style workspace for Android" width="100%"/>
+
 # WinLite 10
 
-WinLite 10 is a native Android prototype for a lightweight Windows-style workspace. The first milestone provides a desktop-like shell and file workspace, but **does not yet run Windows EXE/MSI files**.
+**A lightweight, Windows-inspired Android workspace prototype.**
 
-## Target and build
+[![Android](https://img.shields.io/badge/Android-8.1%2B-3DDC84?logo=android&logoColor=white)](https://developer.android.com/) [![Kotlin](https://img.shields.io/badge/Kotlin-2.0.21-7F52FF?logo=kotlin&logoColor=white)](https://kotlinlang.org/) [![Build APK](https://github.com/xsoftwareabdullah1-create/Winlite10/actions/workflows/android.yml/badge.svg)](https://github.com/xsoftwareabdullah1-create/Winlite10/actions/workflows/android.yml) [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
 
-- Target device: Redmi Note 5, Android 8.1 (API 27), subject to verification on the actual device.
-- Android minimum API: 27.
-- Android Gradle Plugin 8.7.3, Gradle 8.9, JDK 17, compile SDK 35.
-- GitHub Actions workflow: `.github/workflows/android.yml`.
-- Package: `com.winlite10`; CI artifact: `WinLite10.apk`.
+[Features](#-features) • [Install](#-build-and-install) • [Build APK](#-download-the-apk) • [Roadmap](#-roadmap) • [Limitations](#-important-limitations)
 
-## Features
+</div>
 
-- Native dark-blue desktop-style home screen, Start menu and taskbar-style navigation.
-- File Explorer for the app-private workspace.
-- Create folders, import files from Android's document picker, view metadata and delete workspace items with confirmation.
-- EXE/MSI file selection with a notice that execution is not implemented.
-- Dark/light appearance toggle and device diagnostics.
+---
 
-## Important limitations
+## ✨ About
 
-This is **not Windows 10**. This milestone does not include Wine, a Linux userspace, Box86/Box64 or another CPU translation layer. It cannot execute Windows programs. Selecting an EXE/MSI only selects the file and displays a limitation notice.
+WinLite 10 is an Android-native project that explores a familiar desktop-style experience on mobile. It includes a Windows-inspired home screen, Start menu, taskbar-like navigation, a private file workspace, settings, and device diagnostics.
 
-The app's workspace is in private app storage. Uninstalling the app or clearing its data normally deletes that data. Export/backup tooling is not included. Do not store your only copy of important files here.
+The project is a **prototype foundation**, with Android 8.1 (API 27) as its minimum target. It is not a full Windows emulator, and it does not currently run Windows applications.
 
-## Build with GitHub Actions
+## 🚀 Features
 
-1. Open **Actions** in the repository and enable Actions if prompted.
-2. Select **Build WinLite 10 Android APK** and click **Run workflow**, or push a commit to `main`.
-3. Wait for the workflow to finish.
-4. Open the completed run and download the `WinLite10-APK` artifact.
-5. Extract the artifact ZIP; it contains `WinLite10.apk` and `SHA256SUMS.txt`.
+| Feature | What it does |
+|---|---|
+| 🖥️ Desktop-style home | Windows-inspired home screen, Start menu and taskbar-like navigation |
+| 📁 Private File Explorer | Browse the app workspace and view file details |
+| 📥 Import files | Copy files from Android document picker into the app-private workspace |
+| 📂 Folder management | Create folders and delete workspace items with confirmation |
+| ⚙️ Settings | Switch between dark and light themes |
+| 📱 Device diagnostics | View Android version, model, supported CPU ABIs and memory information |
+| 🧪 Compatibility page | Shows which Windows-compatibility components are not yet integrated |
+| ☁️ Cloud build | GitHub Actions runs unit tests and attempts a debug APK build |
 
-The workflow builds a debug APK for testing, not a signed Play Store release. The project has not been verified on the target phone yet.
+## 🎨 Branding
 
-## Next steps
+- Project logo: [assets/winlite10-logo.svg](assets/winlite10-logo.svg)
+- README hero banner: [assets/winlite10-banner.svg](assets/winlite10-banner.svg)
 
-Verify the actual device's CPU ABI and available RAM, then evaluate a legally redistributable Wine/userspace and translation layer before claiming Windows application compatibility.
+## 📲 Build and install
+
+### Option A — Download a CI APK
+
+1. Open [GitHub Actions workflow runs](https://github.com/xsoftwareabdullah1-create/Winlite10/actions/workflows/android.yml).
+2. Open the latest **successful** run.
+3. Under **Artifacts**, download **WinLite10-APK**.
+4. Extract the artifact ZIP; it should contain WinLite10.apk and SHA256SUMS.txt.
+5. Install the APK on Android. Only enable installation permission for the trusted app used to open the APK, and disable it again afterwards.
+
+**Note:** A workflow run can fail. Download the APK only from a successful run where the artifact is present.
+
+### Option B — Build from source
+
+Requirements: JDK 17, Android SDK platform 35, and Gradle 8.9.
+
+```bash
+gradle --no-daemon testDebugUnitTest
+gradle --no-daemon assembleDebug
+```
+
+If the build completes, the debug APK should be at app/build/outputs/apk/debug/app-debug.apk.
+
+## 📋 System requirements
+
+- Android 8.1 or later (API 27+).
+- Available storage for the app and files you import.
+- Performance depends on the device and Android version.
+
+## 🧭 Roadmap
+
+- [x] Android-native desktop-style shell
+- [x] Private workspace and basic folder/file actions
+- [x] Theme toggle and device diagnostics
+- [x] GitHub Actions build workflow
+- [x] SVG project logo and README banner
+- [ ] Improve tablet and landscape layouts
+- [ ] Add workspace export/backup
+- [ ] Evaluate Wine, a compatible Linux userspace, and CPU translation for a future milestone
+- [ ] Validate any Windows-compatibility implementation on the target device
+
+## ⚠️ Important limitations
+
+**Windows EXE/MSI execution is not implemented.** The app can select an EXE/MSI file and show a notice, but it does not execute it. Wine, a Linux userspace, Box86/Box64 (or another translation layer), Windows C: drive mapping, and a Windows desktop runtime are not bundled in this milestone. Do not treat this prototype as a working Windows emulator.
+
+The workspace is stored in private app storage. Uninstalling the app or clearing its data may permanently remove imported files. Keep separate copies of important data.
+
+## 🛠️ Technology
+
+- Kotlin and native Android UI
+- Android Gradle Plugin 8.7.3
+- Gradle 8.9 in CI
+- JDK 17
+- GitHub Actions
+
+## 🤝 Contributing
+
+Issues and pull requests are welcome. Include device model, Android version, steps to reproduce, and relevant build logs when reporting a bug. Never post passwords, API keys, or other secrets.
+
+## 📄 License
+
+Released under the [MIT License](LICENSE).
+
+---
+
+<div align="center">
+**WinLite 10 — a small Android prototype with a desktop-inspired vision.**
+
+[Repository](https://github.com/xsoftwareabdullah1-create/Winlite10) · [Actions / APK artifacts](https://github.com/xsoftwareabdullah1-create/Winlite10/actions) · [Issues](https://github.com/xsoftwareabdullah1-create/Winlite10/issues)
+</div>
