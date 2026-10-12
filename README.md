@@ -1,10 +1,10 @@
 <div align="center">
 
-<img src="assets/winlite10-banner.svg" alt="WinLite 10 — A Windows-style workspace for Android" width="100%"/>
+<img src="assets/winlite10-banner.svg" alt="MacLite — A Mac-style workspace for Android" width="100%"/>
 
-# WinLite 10
+# MacLite
 
-**A lightweight, Windows-inspired Android workspace prototype.**
+**A lightweight, macOS-inspired Android workspace prototype.**
 
 [![Android](https://img.shields.io/badge/Android-8.1%2B-3DDC84?logo=android&logoColor=white)](https://developer.android.com/) [![Kotlin](https://img.shields.io/badge/Kotlin-2.0.21-7F52FF?logo=kotlin&logoColor=white)](https://kotlinlang.org/) [![Build APK](https://github.com/xsoftwareabdullah1-create/Winlite10/actions/workflows/android.yml/badge.svg)](https://github.com/xsoftwareabdullah1-create/Winlite10/actions/workflows/android.yml) [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
 
@@ -16,7 +16,7 @@
 
 ## ✨ About
 
-WinLite 10 is an Android-native project that explores a familiar desktop-style experience on mobile. It includes a Windows-inspired home screen, Start menu, taskbar-like navigation, a private file workspace, settings, and device diagnostics.
+MacLite is an Android-native project that explores a macOS-inspired desktop experience on mobile. It includes a macOS-inspired home screen, Start menu, taskbar-like navigation, a private file workspace, settings, and device diagnostics.
 
 The project is a **prototype foundation**, with Android 10 (API 29) as its minimum target. It is not a full Windows emulator, and it does not currently run Windows applications.
 
@@ -24,7 +24,7 @@ The project is a **prototype foundation**, with Android 10 (API 29) as its minim
 
 | Feature | What it does |
 |---|---|
-| 🖥️ Desktop-style home | Windows-inspired home screen, Start menu and taskbar-like navigation |
+| 🖥️ Desktop-style home | macOS-inspired home screen, Start menu and taskbar-like navigation |
 | 📁 Private File Explorer | Browse the app workspace and view file details |
 | 📥 Import files | Copy files from Android document picker into the app-private workspace |
 | 📂 Folder management | Create folders and delete workspace items with confirmation |
@@ -44,8 +44,8 @@ The project is a **prototype foundation**, with Android 10 (API 29) as its minim
 
 1. Open [GitHub Actions workflow runs](https://github.com/xsoftwareabdullah1-create/Winlite10/actions/workflows/android.yml).
 2. Open the latest **successful** run.
-3. Under **Artifacts**, download **WinLite10-APK**.
-4. Extract the artifact ZIP; it should contain WinLite10.apk and SHA256SUMS.txt.
+3. Under **Artifacts**, download **MacLite-APK**.
+4. Extract the artifact ZIP; it should contain MacLite.apk and SHA256SUMS.txt.
 5. Install the APK on Android. Only enable installation permission for the trusted app used to open the APK, and disable it again afterwards.
 
 **Note:** A workflow run can fail. Download the APK only from a successful run where the artifact is present.
@@ -81,13 +81,13 @@ If the build completes, the debug APK should be at app/build/outputs/apk/debug/a
 
 ## 🧯 Crash diagnostics and EXE Runner status
 
-The app now catches startup errors from its initial screen and displays a basic diagnostic message; details are also written to Android Logcat with the tag `WinLite10`. This is a diagnostic safeguard, not proof that every crash is fixed. If it still stops, open **View summary** on the Android crash dialog or capture the `FATAL EXCEPTION` stack trace and share it so the exact cause can be identified.
+The app now catches startup errors from its initial screen and displays a basic diagnostic message; details are also written to Android Logcat with the tag `MacLite`. This is a diagnostic safeguard, not proof that every crash is fixed. If it still stops, open **View summary** on the Android crash dialog or capture the `FATAL EXCEPTION` stack trace and share it so the exact cause can be identified.
 
 The **EXE Runner** page is currently a runtime-readiness screen. It does not launch Windows executables because the Wine/userspace/CPU translation backend is not yet integrated.
 
 ## ⚠️ Important limitations
 
-**Windows EXE/MSI execution is not implemented.** The app can select an EXE/MSI file and show a notice, but it does not execute it. Wine, a Linux userspace, Box86/Box64 (or another translation layer), Windows C: drive mapping, and a Windows desktop runtime are not bundled in this milestone. Do not treat this prototype as a working Windows emulator.
+**Windows EXE/MSI execution is not implemented. macOS apps are not executed either; this project is a Mac-inspired Android interface, not macOS.** The app can select an EXE/MSI file and show a notice, but it does not execute it. Wine, a Linux userspace, Box86/Box64 (or another translation layer), Windows C: drive mapping, and a Windows desktop runtime are not bundled in this milestone. Do not treat this prototype as a working Windows emulator.
 
 The workspace is stored in private app storage. Uninstalling the app or clearing its data may permanently remove imported files. Keep separate copies of important data.
 
@@ -110,7 +110,7 @@ Released under the [MIT License](LICENSE).
 ---
 
 <div align="center">
-**WinLite 10 — a small Android prototype with a desktop-inspired vision.**
+**MacLite — a small Android prototype with a Mac-inspired desktop vision.**
 
 [Repository](https://github.com/xsoftwareabdullah1-create/Winlite10) · [Actions / APK artifacts](https://github.com/xsoftwareabdullah1-create/Winlite10/actions) · [Issues](https://github.com/xsoftwareabdullah1-create/Winlite10/issues)
 </div>
