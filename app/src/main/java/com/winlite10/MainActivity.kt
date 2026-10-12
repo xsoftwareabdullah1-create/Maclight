@@ -82,84 +82,179 @@ class MainActivity : Activity() {
         setContentView(page)
     }
 
+
     private fun baseLayout(title: String): LinearLayout {
+        window.statusBarColor = Color.rgb(8, 18, 38)
+        window.navigationBarColor = Color.rgb(8, 18, 38)
         val layout = LinearLayout(this).apply {
             orientation = LinearLayout.VERTICAL
-            setBackgroundColor(if (darkMode) bg else Color.rgb(225, 236, 247))
-            setPadding(dp(12), dp(12), dp(12), dp(8))
+            setBackgroundColor(if (darkMode) Color.rgb(8, 18, 38) else Color.rgb(235, 242, 250))
+            setPadding(dp(16), dp(14), dp(16), dp(12))
         }
         val header = TextView(this).apply {
             text = title
-            textSize = 21f
-            setTextColor(if (darkMode) textColor else Color.rgb(15, 35, 55))
-            setPadding(dp(4), dp(8), dp(4), dp(12))
+            textSize = 23f
+            setTypeface(null, android.graphics.Typeface.BOLD)
+            setTextColor(if (darkMode) Color.WHITE else Color.rgb(18, 35, 58))
+            setPadding(dp(2), dp(8), dp(2), dp(14))
         }
         layout.addView(header, matchWrap())
         return layout
     }
 
-    private fun showDesktop() {
-        root = baseLayout("WinLite 10")
-        val subtitle = label("A lightweight Windows-style workspace")
-        root.addView(subtitle, matchWrap())
 
-        val info = label("Prototype milestone 1  •  Android ${android.os.Build.VERSION.RELEASE}")
-        info.setPadding(dp(4), dp(3), dp(4), dp(12))
-        root.addView(info, matchWrap())
+    private fun showDesktop() {
+        startMenuVisible = false
+        window.statusBarColor = Color.rgb(8, 18, 38)
+        window.navigationBarColor = Color.rgb(8, 18, 38)
+        root = LinearLayout(this).apply {
+            orientation = LinearLayout.VERTICAL
+            setPadding(dp(14), dp(12), dp(14), dp(10))
+            background = android.graphics.drawable.GradientDrawable(
+                android.graphics.drawable.GradientDrawable.Orientation.TL_BR,
+                intArrayOf(Color.rgb(10, 28, 62), Color.rgb(20, 72, 125), Color.rgb(7, 20, 43))
+            )
+        }
+        val top = LinearLayout(this).apply {
+            orientation = LinearLayout.HORIZONTAL
+            gravity = Gravity.CENTER_VERTICAL
+            setPadding(dp(4), dp(8), dp(4), dp(10))
+        }
+        top.addView(TextView(this).apply {
+            text = "WinLite 10"
+            textSize = 21f
+            setTypeface(null, android.graphics.Typeface.BOLD)
+            setTextColor(Color.WHITE)
+        }, LinearLayout.LayoutParams(0, ViewGroup.LayoutParams.WRAP_CONTENT, 1f))
+        top.addView(TextView(this).apply {
+            text = "●  Connected"
+            textSize = 11f
+            setTextColor(Color.rgb(190, 225, 255))
+        }, wrapWrap())
+        root.addView(top, matchWrap())
 
         val desktop = LinearLayout(this).apply {
             orientation = LinearLayout.VERTICAL
-            setBackgroundColor(if (darkMode) panel else Color.WHITE)
-            setPadding(dp(10), dp(10), dp(10), dp(10))
+            gravity = Gravity.TOP
+            setPadding(dp(8), dp(10), dp(8), dp(10))
+            background = android.graphics.drawable.GradientDrawable().apply {
+                setColor(0x1AFFFFFF)
+                cornerRadius = dp(22).toFloat()
+                setStroke(dp(1), 0x33FFFFFF)
+            }
         }
-        desktop.addView(label("DESKTOP"), matchWrap())
-        val shortcuts = listOf(
-            "📁  File Explorer" to ::showExplorer,
-            "🧰  App compatibility" to ::showCompatibility,
-            "⚙️  Settings" to ::showSettings,
-            "🖥️  System diagnostics" to ::showDiagnostics
-        )
-        shortcuts.forEach { (name, action) ->
-            desktop.addView(actionButton(name, action), matchWrap())
+        desktop.addView(TextView(this).apply {
+            text = "Desktop"
+            textSize = 14f
+            setTextColor(Color.rgb(215, 233, 255))
+            setPadding(dp(8), dp(4), dp(8), dp(12))
+        }, matchWrap())
+        fun addShortcutRow(leftName: String, leftAction: () -> Unit, rightName: String, rightAction: () -> Unit) {
+            val row = LinearLayout(this).apply { orientation = LinearLayout.HORIZONTAL }
+            row.addView(actionButton(leftName, leftAction), LinearLayout.LayoutParams(0, dp(78), 1f).apply {
+                setMargins(dp(4), dp(3), dp(4), dp(3))
+            })
+            row.addView(actionButton(rightName, rightAction), LinearLayout.LayoutParams(0, dp(78), 1f).apply {
+                setMargins(dp(4), dp(3), dp(4), dp(3))
+            })
+            desktop.addView(row, matchWrap())
         }
-        root.addView(desktop, LinearLayout.LayoutParams(
-            ViewGroup.LayoutParams.MATCH_PARENT, 0, 1f
-        ))
+        addShortcutRow("📁\nFile Explorer", ::showExplorer, "🧰\nCompatibility", ::showCompatibility)
+        addShortcutRow("⚙️\nSettings", ::showSettings, "🖥️\nDiagnostics", ::showDiagnostics)
+        root.addView(desktop, LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, 0, 1f))
+        root.addView(TextView(this).apply {
+            text = "Windows 11-inspired mobile desktop"
+            textSize = 11f
+            gravity = Gravity.CENTER
+            setTextColor(Color.rgb(195, 220, 248))
+            setPadding(0, dp(8), 0, dp(8))
+        }, matchWrap())
 
-        val taskbar = LinearLayout(this).apply {
+        val dockShell = LinearLayout(this).apply {
             orientation = LinearLayout.HORIZONTAL
-            gravity = Gravity.CENTER_VERTICAL
-            setPadding(0, dp(8), 0, 0)
+            gravity = Gravity.CENTER
+            setPadding(dp(7), dp(6), dp(7), dp(6))
+            background = android.graphics.drawable.GradientDrawable().apply {
+                setColor(0xD91B2D45.toInt())
+                cornerRadius = dp(24).toFloat()
+                setStroke(dp(1), 0x55FFFFFF)
+            }
         }
-        taskbar.addView(actionButton("⊞ Start") { toggleStartMenu() },
-            LinearLayout.LayoutParams(0, dp(48), 1f))
-        taskbar.addView(actionButton("Explorer") { showExplorer() },
-            LinearLayout.LayoutParams(0, dp(48), 1f))
-        taskbar.addView(actionButton("Settings") { showSettings() },
-            LinearLayout.LayoutParams(0, dp(48), 1f))
-        root.addView(taskbar, matchWrap())
-
-        status = label("Ready  •  Workspace stored inside app")
-        status.textSize = 11f
-        status.setPadding(dp(4), dp(8), dp(4), 0)
-        root.addView(status, matchWrap())
+        dockShell.addView(actionButton("⊞", "Start menu") { toggleStartMenu() },
+            LinearLayout.LayoutParams(0, dp(48), 1f).apply { setMargins(dp(2), 0, dp(2), 0) })
+        dockShell.addView(actionButton("⌕", "Search") {
+            AlertDialog.Builder(this).setTitle("Search").setMessage("Search is not implemented in this preview yet.")
+                .setPositiveButton("OK", null).show()
+        }, LinearLayout.LayoutParams(0, dp(48), 1f).apply { setMargins(dp(2), 0, dp(2), 0) })
+        dockShell.addView(actionButton("📁", "Explorer") { showExplorer() },
+            LinearLayout.LayoutParams(0, dp(48), 1f).apply { setMargins(dp(2), 0, dp(2), 0) })
+        dockShell.addView(actionButton("⚙", "Settings") { showSettings() },
+            LinearLayout.LayoutParams(0, dp(48), 1f).apply { setMargins(dp(2), 0, dp(2), 0) })
+        root.addView(dockShell, matchWrap())
+        root.addView(TextView(this).apply {
+            text = "Ready   •   Android " + android.os.Build.VERSION.RELEASE
+            textSize = 10f
+            gravity = Gravity.CENTER
+            setTextColor(Color.rgb(180, 207, 235))
+            setPadding(0, dp(8), 0, 0)
+        }, matchWrap())
         setContentView(root)
     }
 
+
     private fun toggleStartMenu() {
-        if (startMenuVisible) {
-            showDesktop()
-            return
-        }
+        if (startMenuVisible) { showDesktop(); return }
         startMenuVisible = true
-        val menu = baseLayout("Start")
-        menu.addView(label("Pinned tools"), matchWrap())
-        menu.addView(actionButton("File Explorer") { startMenuVisible = false; showExplorer() }, matchWrap())
-        menu.addView(actionButton("Import Windows EXE / MSI") { startMenuVisible = false; pickExecutable() }, matchWrap())
-        menu.addView(actionButton("Compatibility status") { startMenuVisible = false; showCompatibility() }, matchWrap())
-        menu.addView(actionButton("Settings") { startMenuVisible = false; showSettings() }, matchWrap())
-        menu.addView(actionButton("Back to desktop") { startMenuVisible = false; showDesktop() }, matchWrap())
-        setContentView(menu)
+        val screen = LinearLayout(this).apply {
+            orientation = LinearLayout.VERTICAL
+            gravity = Gravity.BOTTOM or Gravity.CENTER_HORIZONTAL
+            setPadding(dp(16), dp(16), dp(16), dp(18))
+            background = android.graphics.drawable.GradientDrawable(
+                android.graphics.drawable.GradientDrawable.Orientation.TL_BR,
+                intArrayOf(Color.rgb(9, 27, 54), Color.rgb(23, 65, 105), Color.rgb(8, 19, 39))
+            )
+        }
+        screen.addView(View(this), LinearLayout.LayoutParams(1, 0, 1f))
+        val menu = LinearLayout(this).apply {
+            orientation = LinearLayout.VERTICAL
+            setPadding(dp(16), dp(16), dp(16), dp(14))
+            background = android.graphics.drawable.GradientDrawable().apply {
+                setColor(0xF21B2D45.toInt())
+                cornerRadius = dp(26).toFloat()
+                setStroke(dp(1), 0x66FFFFFF)
+            }
+        }
+        menu.addView(TextView(this).apply {
+            text = "Start"
+            textSize = 22f
+            setTypeface(null, android.graphics.Typeface.BOLD)
+            setTextColor(Color.WHITE)
+            setPadding(dp(5), dp(4), dp(5), dp(12))
+        }, matchWrap())
+        menu.addView(TextView(this).apply {
+            text = "Pinned"
+            textSize = 13f
+            setTextColor(Color.rgb(202, 224, 248))
+            setPadding(dp(5), dp(2), dp(5), dp(8))
+        }, matchWrap())
+        fun addPinnedRow(first: String, firstAction: () -> Unit, second: String, secondAction: () -> Unit) {
+            val row = LinearLayout(this).apply { orientation = LinearLayout.HORIZONTAL }
+            row.addView(actionButton(first, firstAction), LinearLayout.LayoutParams(0, dp(64), 1f).apply {
+                setMargins(dp(3), dp(3), dp(3), dp(3))
+            })
+            row.addView(actionButton(second, secondAction), LinearLayout.LayoutParams(0, dp(64), 1f).apply {
+                setMargins(dp(3), dp(3), dp(3), dp(3))
+            })
+            menu.addView(row, matchWrap())
+        }
+        addPinnedRow("📁\nExplorer", { startMenuVisible = false; showExplorer() },
+            "🧰\nEXE status", { startMenuVisible = false; showExeRunner() })
+        addPinnedRow("⚙️\nSettings", { startMenuVisible = false; showSettings() },
+            "🖥️\nDiagnostics", { startMenuVisible = false; showDiagnostics() })
+        menu.addView(actionButton("Power  ·  Back to desktop") { showDesktop() }, matchWrap())
+        screen.addView(menu, LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT))
+        screen.addView(actionButton("Close Start") { showDesktop() }, matchWrap())
+        setContentView(screen)
     }
 
     private fun showExplorer() {
@@ -401,17 +496,22 @@ class MainActivity : Activity() {
         setPadding(dp(5), dp(7), dp(5), dp(7))
     }
 
-    private fun actionButton(value: String, action: () -> Unit): Button = Button(this).apply {
+
+    private fun actionButton(value: String, action: () -> Unit): Button = actionButton(value, value, action)
+
+    private fun actionButton(value: String, accessibilityLabel: String, action: () -> Unit): Button = Button(this).apply {
         text = value
+        contentDescription = accessibilityLabel
         isAllCaps = false
         textSize = 13f
-        setTextColor(if (darkMode) textColor else Color.rgb(15, 35, 55))
+        minHeight = dp(44)
+        setTextColor(if (darkMode) Color.WHITE else Color.rgb(15, 35, 55))
         background = android.graphics.drawable.GradientDrawable().apply {
-            setColor(if (darkMode) panel2 else Color.rgb(236, 244, 251))
-            setStroke(dp(1), accent)
-            cornerRadius = dp(9).toFloat()
+            setColor(if (darkMode) 0xD9253E5C.toInt() else Color.rgb(236, 244, 251))
+            setStroke(dp(1), if (darkMode) 0x668FCBFF else accent)
+            cornerRadius = dp(15).toFloat()
         }
-        setPadding(dp(8), dp(5), dp(8), dp(5))
+        setPadding(dp(7), dp(5), dp(7), dp(5))
         stateListAnimator = null
         setOnClickListener {
             alpha = 0.72f
