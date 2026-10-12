@@ -1,7 +1,5 @@
 <div align="center">
 
-<img src="assets/maclite-banner.svg" alt="MacLite — macOS-inspired Android desktop" width="100%"/>
-
 # MacLite
 
 ### A Mac-inspired desktop experience for Android
