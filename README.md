@@ -18,7 +18,7 @@
 
 WinLite 10 is an Android-native project that explores a familiar desktop-style experience on mobile. It includes a Windows-inspired home screen, Start menu, taskbar-like navigation, a private file workspace, settings, and device diagnostics.
 
-The project is a **prototype foundation**, with Android 8.1 (API 27) as its minimum target. It is not a full Windows emulator, and it does not currently run Windows applications.
+The project is a **prototype foundation**, with Android 10 (API 29) as its minimum target. It is not a full Windows emulator, and it does not currently run Windows applications.
 
 ## 🚀 Features
 
@@ -63,7 +63,7 @@ If the build completes, the debug APK should be at app/build/outputs/apk/debug/a
 
 ## 📋 System requirements
 
-- Android 8.1 or later (API 27+).
+- Android 10 or later (API 29+).
 - Available storage for the app and files you import.
 - Performance depends on the device and Android version.
 
@@ -76,8 +76,8 @@ If the build completes, the debug APK should be at app/build/outputs/apk/debug/a
 - [x] SVG project logo and README banner
 - [ ] Improve tablet and landscape layouts
 - [ ] Add workspace export/backup
-- [ ] Evaluate Wine, a compatible Linux userspace, and CPU translation for a future milestone
-- [ ] Validate any Windows-compatibility implementation on the target device
+- [ ] Evaluate integrating a compatible Wine runtime, Linux userspace, and ARM64 CPU translation backend
+- [ ] Validate Windows-compatibility runtime on Android 10+ devices
 
 ## 🧯 Crash diagnostics and EXE Runner status
 
