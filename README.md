@@ -79,6 +79,12 @@ If the build completes, the debug APK should be at app/build/outputs/apk/debug/a
 - [ ] Evaluate Wine, a compatible Linux userspace, and CPU translation for a future milestone
 - [ ] Validate any Windows-compatibility implementation on the target device
 
+## 🧯 Crash diagnostics and EXE Runner status
+
+The app now catches startup errors from its initial screen and displays a basic diagnostic message; details are also written to Android Logcat with the tag `WinLite10`. This is a diagnostic safeguard, not proof that every crash is fixed. If it still stops, open **View summary** on the Android crash dialog or capture the `FATAL EXCEPTION` stack trace and share it so the exact cause can be identified.
+
+The **EXE Runner** page is currently a runtime-readiness screen. It does not launch Windows executables because the Wine/userspace/CPU translation backend is not yet integrated.
+
 ## ⚠️ Important limitations
 
 **Windows EXE/MSI execution is not implemented.** The app can select an EXE/MSI file and show a notice, but it does not execute it. Wine, a Linux userspace, Box86/Box64 (or another translation layer), Windows C: drive mapping, and a Windows desktop runtime are not bundled in this milestone. Do not treat this prototype as a working Windows emulator.
