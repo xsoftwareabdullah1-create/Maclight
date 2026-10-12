@@ -8,7 +8,7 @@ android {
     compileSdk = 35
     defaultConfig {
         applicationId = "com.winlite10"
-        minSdk = 27
+        minSdk = 29
         targetSdk = 28
         versionCode = 1
         versionName = "0.1.0"
